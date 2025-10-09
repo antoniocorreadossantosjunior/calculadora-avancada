@@ -1,0 +1,61 @@
+ body.dark-mode {
+  background: #1e1e1e;
+  color: #f5f5f5;
+}
+
+body.dark-mode .tab-content {
+  background: #333;
+  color: #f5f5f5;
+}
+
+body.dark-mode input,
+body.dark-mode button {
+  background: #444;
+  color: #f5f5f5;
+  border: 1px solid #888;
+}
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #ddd;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .tab-button.active {
+      background-color: #4285f4;
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .converter {
+      margin-bottom: 20px;
+    }
+
+    .converter input {
+      margin-right: 10px;
+      padding: 5px;
+    }

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conversor e Digitação</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="tabs">
+    <button class="tab-button active" data-tab="medidas">Converter Medidas</button>
+    <button class="tab-button" data-tab="temperatura">Converter Temperatura</button>
+    <button class="tab-button" data-tab="wpm">Tempo de Digitação</button>
+  </div>
+
+  <!-- Aba 1: Conversor de Medidas -->
+  <div class="tab-content active" id="medidas">
+    <h2>Conversor de Medidas</h2>
+
+    <div class="converter">
+      <label>Milímetros para Centímetros</label>
+      <input type="number" id="mmInput" placeholder="Digite em mm">
+      <button onclick="converterMM()">Converter</button>
+      <p id="resultadoMM"></p>
+    </div>
+
+    <div class="converter">
+      <label>Centímetros para Metros</label>
+      <input type="number" id="cmInput" placeholder="Digite em cm">
+      <button onclick="converterCM()">Converter</button>
+      <p id="resultadoCM"></p>
+    </div>
+
+    <div class="converter">
+      <label>Metros para Quilômetros</label>
+      <input type="number" id="mInput" placeholder="Digite em m">
+      <button onclick="converterM()">Converter</button>
+      <p id="resultadoM"></p>
+    </div>
+
+    <div class="converter">
+      <label>Quilômetros para Milhas</label>
+      <input type="number" id="kmInput" placeholder="Digite em km">
+      <button onclick="converterKM()">Converter</button>
+      <p id="resultadoKM"></p>
+    </div>
+  </div>
+
+  <!-- Aba 2: Conversor de Temperatura -->
+  <div class="tab-content" id="temperatura">
+    <h2>Conversor de Temperatura</h2>
+
+    <div class="converter">
+      <label>Celsius para Fahrenheit</label>
+      <input type="number" id="celsiusInput" placeholder="Digite em °C">
+      <button onclick="converterCelsius()">Converter</button>
+      <p id="resultadoCelsius"></p>
+    </div>
+  </div>
+
+  <!-- Aba 3: Tempo de Digitação -->
+  <div class="tab-content" id="wpm">
+    <h2>Teste de Digitação</h2>
+
+    <p id="fraseParaDigitar"></p>
+
+    <input type="text" id="entradaUsuario" placeholder="Digite aqui..." disabled>
+
+    <button id="botaoIniciar">Iniciar Teste</button>
+<button id="botaoResetar">🔄 Resetar</button>
+
+    <p id="resultadoWPM"></p>
+  </div>
+
+
+  <script>
+    // Alternar abas
+    const buttons = document.querySelectorAll(".tab-button");
+    const contents = document.querySelectorAll(".tab-content");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        contents.forEach(content => content.classList.remove("active"));
+
+        button.classList.add("active");
+        const tab = button.getAttribute("data-tab");
+        document.getElementById(tab).classList.add("active");
+      });
+    });
+
+    // Conversores de medidas
+    function converterMM() {
+      const mm = parseFloat(document.getElementById("mmInput").value);
+      const cm = mm / 10;
+      document.getElementById("resultadoMM").textContent = `${mm} mm = ${cm} cm`;
+    }
+
+    function converterCM() {
+      const cm = parseFloat(document.getElementById("cmInput").value);
+      const m = cm / 100;
+      document.getElementById("resultadoCM").textContent = `${cm} cm = ${m} m`;
+    }
+
+    function converterM() {
+      const m = parseFloat(document.getElementById("mInput").value);
+      const km = m / 1000;
+      document.getElementById("resultadoM").textContent = `${m} m = ${km} km`;
+    }
+
+    function converterKM() {
+      const km = parseFloat(document.getElementById("kmInput").value);
+      const milhas = km * 0.621371;
+      document.getElementById("resultadoKM").textContent = `${km} km = ${milhas.toFixed(2)} mi`;
+    }
+
+    // Conversor de temperatura
+    function converterCelsius() {
+      const c = parseFloat(document.getElementById("celsiusInput").value);
+      const f = (c * 9/5) + 32;
+      document.getElementById("resultadoCelsius").textContent = `${c} °C = ${f.toFixed(2)} °F`;
+    }
+
+    // Digitação WPM
+    const frases = [
+      "Areia",
+      "Pedra",
+      "Cimento",
+      "Ferro",
+      "Desenvolver é resolver problemas"
+    ];
+
+    let fraseEscolhida = "";
+    let tempoInicio = null;
+
+    document.getElementById("botaoIniciar").addEventListener("click", () => {
+      fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
+      document.getElementById("fraseParaDigitar").textContent = fraseEscolhida;
+
+      const input = document.getElementById("entradaUsuario");
+      input.value = "";
+      input.disabled = false;
+      input.focus();
+
+      tempoInicio = new Date();
+    });
+
+    document.getElementById("entradaUsuario").addEventListener("input", () => {
+      const textoDigitado = document.getElementById("entradaUsuario").value.trim().toLowerCase();
+      const fraseAlvo = fraseEscolhida.toLowerCase();
+
+      if (textoDigitado === fraseAlvo) {
+        const tempoFim = new Date();
+        const segundos = (tempoFim - tempoInicio) / 1000;
+        const palavras = fraseEscolhida.split(" ").length;
+        const wpm = Math.round((palavras / segundos) * 60);
+
+        document.getElementById("resultadoWPM").textContent =
+          `Você digitou ${palavras} palavras em ${segundos.toFixed(2)} segundos (${wpm} WPM).`;
+
+        document.getElementById("entradaUsuario").disabled = true;
+      }
+    });
+    document.getElementById("botaoResetar").addEventListener("click", () => {
+  document.getElementById("fraseParaDigitar").textContent = "Clique no botão para iniciar o teste!";
+  document.getElementById("entradaUsuario").value = "";
+  document.getElementById("entradaUsuario").disabled = true;
+  document.getElementById("resultadoWPM").textContent = "";
+});
+
+  </script>
+</body>
+</html>
